@@ -10,6 +10,7 @@ __pycache__/
 *.xml
 *.idea
 *.iml
+.idea
 
 # Distribution / packaging
 .Python
