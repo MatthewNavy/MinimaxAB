@@ -1,7 +1,4 @@
 # Matthew Barton
-from copy import deepcopy
-
-print('Starting tic-tac-toe game...')
 
 class TicTacToe:
 
@@ -14,7 +11,11 @@ class TicTacToe:
         self.player = 1
 
     def copy(self):
-        return deepcopy(self)
+        copy = TicTacToe()
+        copy.validMoves = self.validMoves
+        copy.board = self.board
+        copy.player = self.player
+        return copy
 
     def makeMove(self, move):
         if self.player == 1:
@@ -25,7 +26,6 @@ class TicTacToe:
             self.player = 1
         else:
             raise ValueError
-
 
     # assumed that state is terminal
     def scoreGame(self):
@@ -49,7 +49,7 @@ class TicTacToe:
         else:
             return 0
 
-    def validMoves(self):
+    def getValidMoves(self):
         for space in range(len(self.board)):
             if self.board[space] != 0:
                 del self.validMoves[space]
@@ -58,3 +58,30 @@ class TicTacToe:
     # TODO: check for terminal game state
     def isTerminal(self):
         return False
+
+    def printBoard(self):
+        sep = 0
+        for row in range(3):
+            spaces = []
+            for col in range(3):
+                space = self.board[row + col]
+                if space == -1:
+                    spaces.append("X")
+                elif space == 1:
+                    spaces.append("O")
+                else:
+                    spaces.append(" ")
+            sep += 1
+            if sep < 3:
+                print(spaces[0], "|", spaces[1], "|", spaces[2], "\n---------")
+            else:
+                print(spaces[0], "|", spaces[1], "|", spaces[2])
+            # print('\n')
+            # for col in range(3):
+            #     space = self.board[row + col]
+            #     if space == -1:
+            #         print('X')
+            #     elif space == -1:
+            #         print('O')
+            #     else:
+            #         print(' ')

@@ -10,7 +10,17 @@ class Minimax:
         # assumed that player 1 will run minimax
         self.player = 1
 
-    def computevalue(self, move):
+    def getMove(self):
+        bestMove = -1
+        bestValue = -1
+        for move in self.gameState.getValidMoves():
+            nextValue = self.computeValue(move)
+            if nextValue > bestValue:
+                bestMove = move
+                bestValue = nextValue
+        return bestMove
+
+    def computeValue(self, move):
         nextGameState = self.gameState.copy()
         nextGameState.makeMove(move)
         self.gameState = nextGameState
@@ -27,7 +37,7 @@ class Minimax:
 
     def computeMax(self):
         maxValue = -2
-        for nextMove in self.gameState.validMoves():
+        for nextMove in self.gameState.getValidMoves():
             value = self.computeValue(nextMove)
             if value > maxValue:
                 maxValue = value
@@ -35,20 +45,8 @@ class Minimax:
 
     def computeMin(self):
         minValue = 2
-        for nextMove in self.gameState.validMoves():
+        for nextMove in self.gameState.getValidMoves():
             value = self.computeValue(nextMove)
             if value < minValue:
                 minValue = value
         return minValue
-
-    def computevalue(self,):
-        if self.gameState.isTerminal():
-            return self.gameState.scoreGame()
-        elif self.player == 1:
-            self.player = 2
-            return self.computeMax()
-        elif self.player == 2:
-            self.player = 1
-            return self.computeMin()
-        else:
-            raise ValueError
