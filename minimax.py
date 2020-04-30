@@ -6,52 +6,64 @@
 class Minimax:
 
     # constructor
-    def __init__(self, gameState):
+    def __init__(self, gameState, depth):
         self.gameState = gameState
         # assumed that player 1 will run minimax
         self.player = 1
+        # how far down the tree it will search
+        self.depth = depth
 
-    # get the best move for the current gamestate using the minimax algorithm
+    # get the best move for the current gamestate using the minimax algorithm; starts the minimax tree
     def getMove(self):
         bestMove = -1
         bestValue = -1
         for move in self.gameState.getValidMoves():
-            nextValue = self.computeValue(move)
-            if nextValue > bestValue:
-                bestMove = move
-                bestValue = nextValue
+            if move != -1:
+                nextValue = self.computeValue(move, 0)
+                if nextValue > bestValue:
+                    bestMove = move
+                    bestValue = nextValue
         return bestMove
 
     # compute and return the score of a move
-    def computeValue(self, move):
-        nextGameState = self.gameState.copy()
-        nextGameState.makeMove(move)
-        self.gameState = nextGameState
-        if self.gameState.isTerminal():
-            return self.gameState.scoreGame()
-        elif self.player == 1:
-            self.player = 2
-            return self.computeMax()
-        elif self.player == 2:
-            self.player = 1
-            return self.computeMin()
+    def computeValue(self, move, depth):
+        if depth < self.depth:
+            nextGameState = self.gameState.copy()
+            nextGameState.makeMove(move)
+            self.gameState = nextGameState
+            #print(self.gameState)
+            if self.gameState.isTerminal():
+                print('game simulation ended')
+                return self.gameState.scoreGame()
+            elif self.player == 1:
+                self.player = 2
+                print('computing max')
+                return self.computeMax(depth)
+            elif self.player == 2:
+                self.player = 1
+                print('computing min')
+                return self.computeMin(depth)
+            else:
+                raise ValueError
         else:
-            raise ValueError
+            return 0
 
     # compute the value for a max node
-    def computeMax(self):
+    def computeMax(self, depth):
         maxValue = -2
         for nextMove in self.gameState.getValidMoves():
-            value = self.computeValue(nextMove)
-            if value > maxValue:
-                maxValue = value
+            if nextMove != -1:
+                value = self.computeValue(nextMove, depth + 1)
+                if value > maxValue:
+                    maxValue = value
         return maxValue
 
     # compute the value for a min node
-    def computeMin(self):
+    def computeMin(self, depth):
         minValue = 2
         for nextMove in self.gameState.getValidMoves():
-            value = self.computeValue(nextMove)
-            if value < minValue:
-                minValue = value
+            if nextMove != -1:
+                value = self.computeValue(nextMove, depth + 1)
+                if value < minValue:
+                    minValue = value
         return minValue

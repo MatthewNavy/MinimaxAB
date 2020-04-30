@@ -32,7 +32,7 @@ if __name__ == '__main__':
     # set up game and agent
     print('Starting tic-tac-toe game...')
     game = TicTacToe()
-    agent = Minimax(game)
+    agent = Minimax(game, 3)
     #game.printBoard()
 
     # game loop
@@ -42,10 +42,10 @@ if __name__ == '__main__':
         #screen.fill(BLACK)
 
         # get and make ai agent move
-        #agentMove = agent.getMove()
-        #game.makeMove(agentMove)
-        #gameOver = game.isTerminal()
-        #print('AI makes move: ' + agentMove)
+        agentMove = agent.getMove()
+        game.makeMove(agentMove)
+        gameOver = game.isTerminal()
+        print('AI makes move: ' + str(agentMove))
         # update screen
         pygame.display.flip()
 
@@ -53,14 +53,13 @@ if __name__ == '__main__':
         # check to see if agent didn't finish game
         if not gameOver:
             # get human input and process moves
-            for event in pygame.event.get():
+            for event in pygame.event.wait():
                 # user quits game
                 if event.type == pygame.QUIT:
                     print("User ended game.")
                     gameOver = True
                 # user makes move
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    # TODO: process mouse clicks correctly
                     print("User made move")
                     pos = pygame.mouse.get_pos()
                     x = pos[0]
@@ -124,6 +123,6 @@ if __name__ == '__main__':
 
     print('Starting Checkers game...')
     game = Checkers()
-    agent = Minimax(game)
+    agent = Minimax(game, 3)
 
     print('Program terminated')
