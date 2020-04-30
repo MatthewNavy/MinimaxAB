@@ -2,6 +2,7 @@
 
 class TicTacToe:
 
+    # constructor
     def __init__(self):
         # board indexed from 0 to 8
         self.validMoves = [0, 1, 2, 3, 4, 5, 6, 7, 8]
@@ -10,6 +11,7 @@ class TicTacToe:
         # player is 1 or 2, 1 goes first
         self.player = 1
 
+    # copy constructor
     def copy(self):
         copy = TicTacToe()
         copy.validMoves = self.validMoves
@@ -17,6 +19,7 @@ class TicTacToe:
         copy.player = self.player
         return copy
 
+    # update game with move given
     def makeMove(self, move):
         if self.player == 1:
             self.board[move] = -1
@@ -28,13 +31,16 @@ class TicTacToe:
             raise ValueError
 
     # assumed that state is terminal
+    # returns who won the game
     def scoreGame(self):
         score = 0
         for row in range(3):
             for col in range(3):
+                print("row = ", row, " col = ", col)
                 score = self.checkForThree(row, col)
         return score
 
+    # check for a triple given any position on the board
     # TODO: check for winning game
     def checkForThree(self, row, col):
         space = self.board[row + col]
@@ -49,16 +55,19 @@ class TicTacToe:
         else:
             return 0
 
+    # returns non-empty board positions
     def getValidMoves(self):
         for space in range(len(self.board)):
             if self.board[space] != 0:
                 del self.validMoves[space]
         return self.validMoves
 
+    # returns whether game is over or not
     # TODO: check for terminal game state
     def isTerminal(self):
         return False
 
+    # debug print
     def printBoard(self):
         sep = 0
         for row in range(3):
@@ -76,12 +85,3 @@ class TicTacToe:
                 print(spaces[0], "|", spaces[1], "|", spaces[2], "\n---------")
             else:
                 print(spaces[0], "|", spaces[1], "|", spaces[2])
-            # print('\n')
-            # for col in range(3):
-            #     space = self.board[row + col]
-            #     if space == -1:
-            #         print('X')
-            #     elif space == -1:
-            #         print('O')
-            #     else:
-            #         print(' ')

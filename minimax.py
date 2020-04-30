@@ -5,11 +5,13 @@
 
 class Minimax:
 
+    # constructor
     def __init__(self, gameState):
         self.gameState = gameState
         # assumed that player 1 will run minimax
         self.player = 1
 
+    # get the best move for the current gamestate using the minimax algorithm
     def getMove(self):
         bestMove = -1
         bestValue = -1
@@ -20,6 +22,7 @@ class Minimax:
                 bestValue = nextValue
         return bestMove
 
+    # compute and return the score of a move
     def computeValue(self, move):
         nextGameState = self.gameState.copy()
         nextGameState.makeMove(move)
@@ -35,6 +38,7 @@ class Minimax:
         else:
             raise ValueError
 
+    # compute the value for a max node
     def computeMax(self):
         maxValue = -2
         for nextMove in self.gameState.getValidMoves():
@@ -43,6 +47,7 @@ class Minimax:
                 maxValue = value
         return maxValue
 
+    # compute the value for a min node
     def computeMin(self):
         minValue = 2
         for nextMove in self.gameState.getValidMoves():
