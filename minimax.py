@@ -15,21 +15,22 @@ class Minimax:
 
     # get the best move for the current gamestate using the minimax algorithm; starts the minimax tree
     def getMove(self):
-        bestMove = -1
         bestValue = -1
+        # TODO: fix empty set
+        bestMove = self.gameState.getValidMoves().pop()
+        self.gameState.getValidMoves().add(bestMove)
         for move in self.gameState.getValidMoves():
-            if move != -1:
-                nextValue = self.computeValue(move, 0)
-                if nextValue > bestValue:
-                    bestMove = move
-                    bestValue = nextValue
+            nextValue = self.computeValue(move, 0)
+            if nextValue > bestValue:
+                bestMove = move
+                bestValue = nextValue
         return bestMove
 
     # compute and return the score of a move
     def computeValue(self, move, depth):
         if depth < self.depth:
             nextGameState = self.gameState.copy()
-            nextGameState.makeMove(move)
+            nextGameState.makeMove(move, 1)  # bot is player 1
             self.gameState = nextGameState
             #print(self.gameState)
             if self.gameState.isTerminal():
@@ -52,18 +53,16 @@ class Minimax:
     def computeMax(self, depth):
         maxValue = -2
         for nextMove in self.gameState.getValidMoves():
-            if nextMove != -1:
-                value = self.computeValue(nextMove, depth + 1)
-                if value > maxValue:
-                    maxValue = value
+            value = self.computeValue(nextMove, depth + 1)
+            if value > maxValue:
+                maxValue = value
         return maxValue
 
     # compute the value for a min node
     def computeMin(self, depth):
         minValue = 2
         for nextMove in self.gameState.getValidMoves():
-            if nextMove != -1:
-                value = self.computeValue(nextMove, depth + 1)
-                if value < minValue:
-                    minValue = value
+            value = self.computeValue(nextMove, depth + 1)
+            if value < minValue:
+                minValue = value
         return minValue
