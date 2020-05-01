@@ -16,8 +16,7 @@ class Minimax:
     # get the best move for the current gamestate using the minimax algorithm; starts the minimax tree
     def getMove(self):
         bestValue = -1
-        # TODO: fix empty set
-        bestMove = self.gameState.getValidMoves().pop()
+        bestMove = (0, 0)  #self.gameState.getValidMoves().pop()
         self.gameState.getValidMoves().add(bestMove)
         for move in self.gameState.getValidMoves():
             nextValue = self.computeValue(move, 0)
@@ -30,7 +29,9 @@ class Minimax:
     def computeValue(self, move, depth):
         if depth < self.depth:
             nextGameState = self.gameState.copy()
-            nextGameState.makeMove(move, 1)  # bot is player 1
+            isMade = nextGameState.makeMove(move, 1)  # bot is player 1
+            if not isMade:
+                return 0
             self.gameState = nextGameState
             #print(self.gameState)
             if self.gameState.isTerminal():

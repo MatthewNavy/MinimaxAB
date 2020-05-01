@@ -19,24 +19,36 @@ class TicTacToe:
     # copy constructor
     def copy(self):
         copy = TicTacToe()
-        copy.validMoves = deepcopy(self.validMoves)
-        copy.board = deepcopy(self.board)
+        validMoves = set()
+        for validMove in self.validMoves:
+            validMoves.add(validMove)
+        board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        for row in range(3):
+            for col in range(3):
+                board[row][col] = self.board[row][col]
+        copy.validMoves = validMoves
+        copy.board = board
         #copy.player = deepcopy(self.player)
         return copy
 
     # update game with move given
+    # returns whether move was valid or not
     def makeMove(self, move, player):
-        row, col = move
-        self.validMoves.remove(move)
-        #print('making move', move, 'at x =', x, 'y =', y)
-        if player == 1:
-            self.board[row][col] = 1
-            #self.player = 2
-        elif player == 2:
-            self.board[row][col] = -1
-            #self.player = 1
-        else:
-            raise ValueError
+        if move in self.getValidMoves():
+            row, col = move
+            self.validMoves.remove(move)
+            #print('making move', move, 'at x =', x, 'y =', y)
+            if player == 1:
+                self.board[row][col] = 1
+                return True
+                #self.player = 2
+            elif player == 2:
+                self.board[row][col] = -1
+                return True
+                #self.player = 1
+            else:
+                raise ValueError
+        return False
 
     # assumed that state is terminal
     # returns who won the game
@@ -51,8 +63,8 @@ class TicTacToe:
             if humanScore == -1:
                 return humanScore
         for col in range(3):
-            botScore = self.checkRowBot(col)
-            humanScore = self.checkRowHuman(col)
+            botScore = self.checkColBot(col)
+            humanScore = self.checkColHuman(col)
             # bot wins
             if botScore == 1:
                 return botScore
@@ -92,21 +104,21 @@ class TicTacToe:
     # checks for column win for human
     def checkColHuman(self, col):
         for row in range(3):
-            if self.board[row][col] != 1:
+            if self.board[row][col] != -1:
                 return 0
         return -1
 
     # checks for diagonal win for bot
     def checkDiagsBot(self):
         for i in range(3):
-            if self.board[i][i] != 1 or self.board[i][2-i] != 1:
+            if self.board[i][i] != 1 and self.board[i][2-i] != 1:
                 return 0
         return 1
 
     # checks for diagonal win for human
     def checkDiagsHuman(self):
         for i in range(3):
-            if self.board[i][i] != -1 or self.board[i][2-i] != -1:
+            if self.board[i][i] != -1 and self.board[i][2-i] != -1:
                 return 0
         return -1
 
@@ -127,8 +139,8 @@ class TicTacToe:
             if humanScore == -1:
                 return True
         for col in range(3):
-            botScore = self.checkRowBot(col)
-            humanScore = self.checkRowHuman(col)
+            botScore = self.checkColBot(col)
+            humanScore = self.checkColHuman(col)
             # bot wins
             if botScore == 1:
                 return True

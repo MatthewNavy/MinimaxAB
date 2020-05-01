@@ -24,60 +24,108 @@ def promptUserAndMakeMove(pos):
     # top left corner
     if x < width / 3 and y < height / 3:
         humanMove = (0, 0)
-        if humanMove in game.getValidMoves():
-            game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        if moveMade:
             pygame.draw.ellipse(screen, circleColor, [0, 0, width / 3, height / 3], circleWidth)
     # top middle
     elif x < width / 3 * 2 and x > width / 3 and y < height / 3:
         humanMove = (0, 1)
-        if humanMove in game.getValidMoves():
-            game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        if moveMade:
             pygame.draw.ellipse(screen, circleColor, [width / 3, 0, width / 3, height / 3], circleWidth)
     # top right corner
     elif x > width / 3 * 2 and y < height / 3:
         humanMove = (0, 2)
-        if humanMove in game.getValidMoves():
-            game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        if moveMade:
             pygame.draw.ellipse(screen, circleColor, [width / 3 * 2, 0, width / 3, height / 3], circleWidth)
     # middle left
     elif x < width / 3 and y > height / 3 and y < height / 3 * 2:
         humanMove = (1, 0)
-        if humanMove in game.getValidMoves():
-            game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        if moveMade:
             pygame.draw.ellipse(screen, circleColor, [0, height / 3, width / 3, height / 3], circleWidth)
     # true middle
     elif x > width / 3 and x < width / 3 * 2 and y > height / 3 and y < height / 3 * 2:
         humanMove = (1, 1)
-        if humanMove in game.getValidMoves():
-            game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        if moveMade:
             pygame.draw.ellipse(screen, circleColor, [width / 3, height / 3, width / 3, height / 3], circleWidth)
     # middle right
     elif x > width / 3 * 2 and y > height / 3 and y < height / 3 * 2:
         humanMove = (1, 2)
-        if humanMove in game.getValidMoves():
-            game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        if moveMade:
             pygame.draw.ellipse(screen, circleColor, [width / 3 * 2, height / 3, width / 3, height / 3], circleWidth)
     # bottom left corner
     elif x < width / 3 and y > height / 3 * 2:
         humanMove = (2, 0)
-        if humanMove in game.getValidMoves():
-            game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        if moveMade:
             pygame.draw.ellipse(screen, circleColor, [0, height / 3 * 2, width / 3, height / 3], circleWidth)
     # middle bottom
     elif x > width / 3 and x < width / 3 * 2 and y > height / 3 * 2:
         humanMove = (2, 1)
-        if humanMove in game.getValidMoves():
-            game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        if moveMade:
             pygame.draw.ellipse(screen, circleColor, [width / 3, height / 3 * 2, width / 3, height / 3], circleWidth)
     # bottom right corner
     elif x > width / 3 * 2 and y > height / 3 * 2:
         humanMove = (2, 2)
-        if humanMove in game.getValidMoves():
-            game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        if moveMade:
             pygame.draw.ellipse(screen, circleColor, [width / 3 * 2, height / 3 * 2, width / 3, height / 3], circleWidth)
 
+def promptAgentAndMakeMove():
+    # get and make ai agent move
+    agentMove = agent.getMove()
+    game.makeMove(agentMove, 1)  # bot is player 1
+    gameOver = game.isTerminal()
+    print(gameOver)
+    print('AI makes move: ' + str(agentMove))
+
+    # draw ai agent move
+    xColor = WHITE
+    xWidth = 2
+    # top left corner
+    if agentMove == (0, 0):
+        pygame.draw.line(screen, xColor, [0, 0], [width / 3, height / 3], xWidth)
+        pygame.draw.line(screen, xColor, [0, height / 3], [width / 3, 0], xWidth)
+    # top middle
+    if agentMove == (0, 1):
+        pygame.draw.line(screen, xColor, [width / 3, 0], [width / 3 * 2, height / 3], xWidth)
+        pygame.draw.line(screen, xColor, [width / 3, height / 3], [width / 3 * 2, 0], xWidth)
+    # top right corner
+    if agentMove == (0, 2):
+        pygame.draw.line(screen, xColor, [width / 3 * 2, 0], [width, height / 3], xWidth)
+        pygame.draw.line(screen, xColor, [width / 3 * 2, height / 3], [width, 0], xWidth)
+    # middle left
+    if agentMove == (1, 0):
+        pygame.draw.line(screen, xColor, [0, height / 3], [width / 3, height / 3 * 2], xWidth)
+        pygame.draw.line(screen, xColor, [0, height / 3 * 2], [width / 3, height / 3], xWidth)
+    # true middle
+    if agentMove == (1, 1):
+        pygame.draw.line(screen, xColor, [width / 3, height / 3], [width / 3 * 2, height / 3 * 2], xWidth)
+        pygame.draw.line(screen, xColor, [width / 3, height / 3 * 2], [width / 3 * 2, height / 3], xWidth)
+    # middle right
+    if agentMove == (1, 2):
+        pygame.draw.line(screen, xColor, [width / 3 * 2, height / 3], [width, height / 3 * 2], xWidth)
+        pygame.draw.line(screen, xColor, [width / 3 * 2, height / 3 * 2], [width, height / 3], xWidth)
+    # bottom left corner
+    if agentMove == (2, 0):
+        pygame.draw.line(screen, xColor, [0, height / 3 * 2], [width / 3, height], xWidth)
+        pygame.draw.line(screen, xColor, [0, height], [width / 3, height / 3 * 2], xWidth)
+    # bottom middle
+    if agentMove == (2, 1):
+        pygame.draw.line(screen, xColor, [width / 3, height / 3 * 2], [width / 3 * 2, height], xWidth)
+        pygame.draw.line(screen, xColor, [width / 3, height], [width / 3 * 2, height / 3 * 2], xWidth)
+    # bottom right corner
+    if agentMove == (2, 2):
+        pygame.draw.line(screen, xColor, [width / 3 * 2, height / 3 * 2], [width, height], xWidth)
+        pygame.draw.line(screen, xColor, [width / 3 * 2, height], [width, height / 3 * 2], xWidth)
+
 if __name__ == '__main__':
-    # pygame and window initializaiont
+    # pygame and window initialization
     pygame.init()
     size = (width, height)
     screen = pygame.display.set_mode(size)
@@ -95,7 +143,7 @@ if __name__ == '__main__':
     # set up game and agent
     print('Starting tic-tac-toe game...')
     game = TicTacToe()
-    agent = Minimax(game, 1)
+    agent = Minimax(game, 3)
     #game.printBoard()
 
     # game loop
@@ -105,52 +153,8 @@ if __name__ == '__main__':
         #screen.fill(BLACK)
         game.printBoard()
 
-        # get and make ai agent move
-        agentMove = agent.getMove()
-        game.makeMove(agentMove, 1)  # bot is player 1
-        gameOver = game.isTerminal()
-        print(gameOver)
-        print('AI makes move: ' + str(agentMove))
-
-        # draw ai agent move
-        xColor = WHITE
-        xWidth = 2
-        # top left corner
-        if agentMove == 0:
-            pygame.draw.line(screen, xColor, [0, 0], [width / 3, height / 3], xWidth)
-            pygame.draw.line(screen, xColor, [0, height / 3], [width / 3, 0], xWidth)
-        # top middle
-        if agentMove == 1:
-            pygame.draw.line(screen, xColor, [width / 3, 0], [width / 3 * 2, height / 3], xWidth)
-            pygame.draw.line(screen, xColor, [width / 3, height / 3], [width / 3 * 2, 0], xWidth)
-        # top right corner
-        if agentMove == 2:
-            pygame.draw.line(screen, xColor, [width / 3 * 2, 0], [width, height / 3], xWidth)
-            pygame.draw.line(screen, xColor, [width / 3 * 2, height / 3], [width, 0], xWidth)
-        # middle left
-        if agentMove == 3:
-            pygame.draw.line(screen, xColor, [0, height / 3], [width / 3, height / 3 * 2], xWidth)
-            pygame.draw.line(screen, xColor, [0, height / 3 * 2], [width / 3, height / 3], xWidth)
-        # true middle
-        if agentMove == 4:
-            pygame.draw.line(screen, xColor, [width / 3, height / 3], [width / 3 * 2, height / 3 * 2], xWidth)
-            pygame.draw.line(screen, xColor, [width / 3, height / 3 * 2], [width / 3 * 2, height / 3], xWidth)
-        # middle right
-        if agentMove == 5:
-            pygame.draw.line(screen, xColor, [width / 3 * 2, height / 3], [width, height / 3 * 2], xWidth)
-            pygame.draw.line(screen, xColor, [width / 3 * 2, height / 3 * 2], [width, height / 3], xWidth)
-        # bottom left corner
-        if agentMove == 6:
-            pygame.draw.line(screen, xColor, [0, height / 3 * 2], [width / 3, height], xWidth)
-            pygame.draw.line(screen, xColor, [0, height], [width / 3, height / 3 * 2], xWidth)
-        # bottom middle
-        if agentMove == 7:
-            pygame.draw.line(screen, xColor, [width / 3, height / 3 * 2], [width / 3 * 2, height], xWidth)
-            pygame.draw.line(screen, xColor, [width / 3, height], [width / 3 * 2, height / 3 * 2], xWidth)
-        # bottom right corner
-        if agentMove == 8:
-            pygame.draw.line(screen, xColor, [width / 3 * 2, height / 3 * 2], [width, height], xWidth)
-            pygame.draw.line(screen, xColor, [width / 3 * 2, height], [width, height / 3 * 2], xWidth)
+        # agent goes first
+        promptAgentAndMakeMove()
 
         # update screen
         pygame.display.flip()
@@ -168,6 +172,7 @@ if __name__ == '__main__':
                     pos = pygame.mouse.get_pos()
                     promptUserAndMakeMove(pos)
                     gameOver = game.isTerminal()
+                    promptAgentAndMakeMove()
                     #game.printBoard()
             # update screen
             pygame.display.flip()
