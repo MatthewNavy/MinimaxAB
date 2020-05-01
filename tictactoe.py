@@ -71,13 +71,15 @@ class TicTacToe:
             # human wins
             if humanScore == -1:
                 return humanScore
-        botScore = self.checkDiagsBot()
-        humanScore = self.checkDiagsHuman()
-        if botScore == 1:
-            return botScore
+        botScore1 = self.checkDiag1Bot()
+        humanScore1 = self.checkDiag1Human()
+        botScore2 = self.checkDiag2Bot()
+        humanScore2 = self.checkDiag2Human()
+        if botScore1 == 1 or botScore2 == 1:
+            return -1
         # human wins
-        if humanScore == -1:
-            return humanScore
+        if humanScore1 == -1 or humanScore2 == 1:
+            return 1
         return 0  # a tie
 
     # checks for row win for bot
@@ -109,16 +111,27 @@ class TicTacToe:
         return -1
 
     # checks for diagonal win for bot
-    def checkDiagsBot(self):
+    def checkDiag1Bot(self):
         for i in range(3):
-            if self.board[i][i] != 1 and self.board[i][2-i] != 1:
+            if self.board[i][i] != 1:
+                return 0
+        return 1
+
+    def checkDiag2Bot(self):
+        for i in range(3):
+            if self.board[i][2 - i] != 1:
                 return 0
         return 1
 
     # checks for diagonal win for human
-    def checkDiagsHuman(self):
+    def checkDiag1Human(self):
         for i in range(3):
-            if self.board[i][i] != -1 and self.board[i][2-i] != -1:
+            if self.board[i][i] != -1:
+                return 0
+        return -1
+    def checkDiag2Human(self):
+        for i in range(3):
+            if self.board[i][2 - i] != -1:
                 return 0
         return -1
 
@@ -147,12 +160,16 @@ class TicTacToe:
             # human wins
             if humanScore == -1:
                 return True
-        botScore = self.checkDiagsBot()
-        humanScore = self.checkDiagsHuman()
-        if botScore == 1:
+        botScore1 = self.checkDiag1Bot()
+        humanScore1 = self.checkDiag1Human()
+        botScore2 = self.checkDiag2Bot()
+        humanScore2 = self.checkDiag2Human()
+        if botScore1 == 1 or botScore2 == 1:
             return True
         # human wins
-        if humanScore == -1:
+        if humanScore1 == -1 or humanScore2 == -1:
+            return True
+        if len(self.validMoves) == 0:
             return True
         return False
 

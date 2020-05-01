@@ -79,6 +79,8 @@ def promptUserAndMakeMove(pos):
 def promptAgentAndMakeMove():
     # get and make ai agent move
     agentMove = agent.getMove()
+    if not agentMove in game.getValidMoves():
+        print('shouldnt happen')
     game.makeMove(agentMove, 1)  # bot is player 1
     gameOver = game.isTerminal()
     print(gameOver)
@@ -143,8 +145,15 @@ if __name__ == '__main__':
     # set up game and agent
     print('Starting tic-tac-toe game...')
     game = TicTacToe()
-    agent = Minimax(game, 3)
+    agent = Minimax(game, 4)
     #game.printBoard()
+
+    # agent goes first
+    promptAgentAndMakeMove()
+    gameOver = game.isTerminal()
+
+    # update screen
+    pygame.display.flip()
 
     # game loop
     gameOver = False
@@ -153,34 +162,53 @@ if __name__ == '__main__':
         #screen.fill(BLACK)
         game.printBoard()
 
-        # agent goes first
-        promptAgentAndMakeMove()
+        pos = (-1, -1)
+        # get human input and process moves
+        for event in pygame.event.get():
+            # user quits game
+            if event.type == pygame.QUIT:
+                print("User ended game.")
+                gameOver = True
+            # user makes move
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+        # user made a move
+        if pos != (-1, -1):
+            promptUserAndMakeMove(pos)
+            gameOver = game.isTerminal()
+            if gameOver:
+                break
+            promptAgentAndMakeMove()
+            gameOver = game.isTerminal()
+            #game.printBoard()
 
         # update screen
         pygame.display.flip()
-
-        # check to see if agent didn't finish game
-        if not gameOver:
-            # get human input and process moves
-            for event in pygame.event.get():
-                # user quits game
-                if event.type == pygame.QUIT:
-                    print("User ended game.")
-                    gameOver = True
-                # user makes move
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos()
-                    promptUserAndMakeMove(pos)
-                    gameOver = game.isTerminal()
-                    promptAgentAndMakeMove()
-                    #game.printBoard()
-            # update screen
-            pygame.display.flip()
         # frames per second = 24
         clock.tick(24)
 
+    screen.fill(BLACK)
+
+    # print winner
+    score = game.scoreGame()
+    font = pygame.font.SysFont('Calibri', 25, True, False)
+    text = ""
+    # tie
+    if score == 0:
+        text = font.render("TIE", True, WHITE)
+    # ai wins
+    elif score == 1:
+        text = font.render("You lose, AI wins", True, WHITE)
+    # human wins
+    else:
+        text = font.render("You win, AI loses", True, WHITE)
+    screen.blit(text, [width / 3 + width / 12, height / 2])
+
+    # update screen
+    pygame.display.flip()
+
     # end game
-    pygame.quit()
+    #pygame.quit()
 
     print('Starting Checkers game...')
     game = Checkers()
