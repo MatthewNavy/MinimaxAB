@@ -15,12 +15,10 @@ width = 900
 height = 900
 
 def promptUserAndMakeMove(pos):
-    #print("User made move")
     x = pos[0]
     y = pos[1]
     circleColor = WHITE
     circleWidth = 2
-    print(game.getValidMoves())
     # top left corner
     if x < width / 3 and y < height / 3:
         humanMove = (0, 0)
@@ -80,7 +78,6 @@ def promptAgentAndMakeMove():
     # get and make ai agent move
     agentMove = agent.getMove()
     moveMade = game.makeMove(agentMove)
-    print('AI makes move: ' + str(agentMove))
 
     # draw ai agent move
     xColor = WHITE
@@ -144,10 +141,11 @@ if __name__ == '__main__':
     # set up game and agent
     print('Starting tic-tac-toe game...')
     game = TicTacToe()
-    agent = Minimax(game, 5)
+    prune = bool(input("Prune? "))
+    depth = int(input("Depth? "))
+    agent = Minimax(game, depth, prune)
     #game.printBoard()
 
-    #sleep(1)
 
     # agent goes first
     promptAgentAndMakeMove()
@@ -161,10 +159,6 @@ if __name__ == '__main__':
     # game loop
     gameOver = False
     while not gameOver:
-        # reset screen
-        #screen.fill(BLACK)
-        #game.printBoard()
-
         pos = (-1, -1)
         # get human input and process moves
         event = pygame.event.wait()
@@ -182,17 +176,16 @@ if __name__ == '__main__':
             gameOver = game.isTerminal()
             # update screen
             pygame.display.flip()
-            #sleep(1)
             if gameOver:
                 break
 
+            # agent makes move
             promptAgentAndMakeMove()
             gameOver = game.isTerminal()
 
             # update screen
             pygame.display.flip()
             #game.printBoard()
-
 
         # frames per second = 24
         clock.tick(24)
@@ -203,7 +196,7 @@ if __name__ == '__main__':
 
     # print winner
     score = game.scoreGame()
-    font = pygame.font.SysFont('Calibri', 25, True, False)
+    font = pygame.font.SysFont('Calibri', 30, True, False)
     text = ""
     # tie
     if score == 0:
@@ -225,6 +218,6 @@ if __name__ == '__main__':
 
     print('Starting Checkers game...')
     game = Checkers()
-    agent = Minimax(game, 3)
+    agent = Minimax(game, 3, False)
 
     print('Program terminated')
