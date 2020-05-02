@@ -3,8 +3,8 @@
 from checkers import Checkers
 from minimax import Minimax
 from tictactoe import TicTacToe
+from time import sleep
 import pygame
-
 
 # color definitions
 BLACK = (0, 0, 0)
@@ -24,66 +24,62 @@ def promptUserAndMakeMove(pos):
     # top left corner
     if x < width / 3 and y < height / 3:
         humanMove = (0, 0)
-        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove)
         if moveMade:
             pygame.draw.ellipse(screen, circleColor, [0, 0, width / 3, height / 3], circleWidth)
     # top middle
     elif x < width / 3 * 2 and x > width / 3 and y < height / 3:
         humanMove = (0, 1)
-        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove)
         if moveMade:
             pygame.draw.ellipse(screen, circleColor, [width / 3, 0, width / 3, height / 3], circleWidth)
     # top right corner
     elif x > width / 3 * 2 and y < height / 3:
         humanMove = (0, 2)
-        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove)
         if moveMade:
             pygame.draw.ellipse(screen, circleColor, [width / 3 * 2, 0, width / 3, height / 3], circleWidth)
     # middle left
     elif x < width / 3 and y > height / 3 and y < height / 3 * 2:
         humanMove = (1, 0)
-        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove)
         if moveMade:
             pygame.draw.ellipse(screen, circleColor, [0, height / 3, width / 3, height / 3], circleWidth)
     # true middle
     elif x > width / 3 and x < width / 3 * 2 and y > height / 3 and y < height / 3 * 2:
         humanMove = (1, 1)
-        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove)
         if moveMade:
             pygame.draw.ellipse(screen, circleColor, [width / 3, height / 3, width / 3, height / 3], circleWidth)
     # middle right
     elif x > width / 3 * 2 and y > height / 3 and y < height / 3 * 2:
         humanMove = (1, 2)
-        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove)
         if moveMade:
             pygame.draw.ellipse(screen, circleColor, [width / 3 * 2, height / 3, width / 3, height / 3], circleWidth)
     # bottom left corner
     elif x < width / 3 and y > height / 3 * 2:
         humanMove = (2, 0)
-        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove)
         if moveMade:
             pygame.draw.ellipse(screen, circleColor, [0, height / 3 * 2, width / 3, height / 3], circleWidth)
     # middle bottom
     elif x > width / 3 and x < width / 3 * 2 and y > height / 3 * 2:
         humanMove = (2, 1)
-        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove)
         if moveMade:
             pygame.draw.ellipse(screen, circleColor, [width / 3, height / 3 * 2, width / 3, height / 3], circleWidth)
     # bottom right corner
     elif x > width / 3 * 2 and y > height / 3 * 2:
         humanMove = (2, 2)
-        moveMade = game.makeMove(humanMove, 2)  # human is player 2
+        moveMade = game.makeMove(humanMove)
         if moveMade:
             pygame.draw.ellipse(screen, circleColor, [width / 3 * 2, height / 3 * 2, width / 3, height / 3], circleWidth)
 
 def promptAgentAndMakeMove():
     # get and make ai agent move
     agentMove = agent.getMove()
-    if not agentMove in game.getValidMoves():
-        print('shouldnt happen')
-    game.makeMove(agentMove, 1)  # bot is player 1
-    gameOver = game.isTerminal()
-    print(gameOver)
+    moveMade = game.makeMove(agentMove)
     print('AI makes move: ' + str(agentMove))
 
     # draw ai agent move
@@ -142,11 +138,16 @@ if __name__ == '__main__':
     pygame.draw.line(screen, WHITE, [0, height / 3], [width, height / 3], lineWidth)
     pygame.draw.line(screen, WHITE, [0, height / 3 * 2], [width, height / 3 * 2], lineWidth)
 
+    # update screen
+    pygame.display.flip()
+
     # set up game and agent
     print('Starting tic-tac-toe game...')
     game = TicTacToe()
-    agent = Minimax(game, 4)
+    agent = Minimax(game, 5)
     #game.printBoard()
+
+    #sleep(1)
 
     # agent goes first
     promptAgentAndMakeMove()
@@ -155,37 +156,48 @@ if __name__ == '__main__':
     # update screen
     pygame.display.flip()
 
+
+
     # game loop
     gameOver = False
     while not gameOver:
         # reset screen
         #screen.fill(BLACK)
-        game.printBoard()
+        #game.printBoard()
 
         pos = (-1, -1)
         # get human input and process moves
-        for event in pygame.event.get():
-            # user quits game
-            if event.type == pygame.QUIT:
-                print("User ended game.")
-                gameOver = True
-            # user makes move
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
+        event = pygame.event.wait()
+        # user quits game
+        if event.type == pygame.QUIT:
+            print("User ended game.")
+            gameOver = True
+        # user makes move
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+
         # user made a move
         if pos != (-1, -1):
             promptUserAndMakeMove(pos)
             gameOver = game.isTerminal()
+            # update screen
+            pygame.display.flip()
+            #sleep(1)
             if gameOver:
                 break
+
             promptAgentAndMakeMove()
             gameOver = game.isTerminal()
+
+            # update screen
+            pygame.display.flip()
             #game.printBoard()
 
-        # update screen
-        pygame.display.flip()
+
         # frames per second = 24
         clock.tick(24)
+
+    sleep(1)
 
     screen.fill(BLACK)
 
@@ -206,9 +218,10 @@ if __name__ == '__main__':
 
     # update screen
     pygame.display.flip()
+    sleep(1.5)
 
     # end game
-    #pygame.quit()
+    pygame.quit()
 
     print('Starting Checkers game...')
     game = Checkers()

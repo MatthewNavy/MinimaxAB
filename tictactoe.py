@@ -13,8 +13,8 @@ class TicTacToe:
                 self.validMoves.add((row, col))
         # 0 = empty space, 1 = X (player 1), -1 = O (player 2)
         self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-        # player is 1 or 2, 1 goes first
-        #self.player = 1
+        # player is 1 (agent) or 2 (human), 1 goes first
+        self.player = 1
 
     # copy constructor
     def copy(self):
@@ -28,24 +28,26 @@ class TicTacToe:
                 board[row][col] = self.board[row][col]
         copy.validMoves = validMoves
         copy.board = board
+        copy.player = deepcopy(self.player)
         #copy.player = deepcopy(self.player)
         return copy
 
     # update game with move given
     # returns whether move was valid or not
-    def makeMove(self, move, player):
+    def makeMove(self, move):
         if move in self.getValidMoves():
             row, col = move
             self.validMoves.remove(move)
             #print('making move', move, 'at x =', x, 'y =', y)
-            if player == 1:
+            if self.player == 1:
                 self.board[row][col] = 1
+                self.player = 2
                 return True
                 #self.player = 2
-            elif player == 2:
+            elif self.player == 2:
                 self.board[row][col] = -1
+                self.player = 1
                 return True
-                #self.player = 1
             else:
                 raise ValueError
         return False
@@ -76,10 +78,10 @@ class TicTacToe:
         botScore2 = self.checkDiag2Bot()
         humanScore2 = self.checkDiag2Human()
         if botScore1 == 1 or botScore2 == 1:
-            return -1
-        # human wins
-        if humanScore1 == -1 or humanScore2 == 1:
             return 1
+        # human wins
+        if humanScore1 == -1 or humanScore2 == -1:
+            return -1
         return 0  # a tie
 
     # checks for row win for bot
