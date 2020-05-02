@@ -20,40 +20,38 @@ class Minimax:
         bestValue = -2
         validMoves = self.gameState.getValidMoves()
         bestMove = validMoves.pop()
-        temp = bestMove
+        # temp = bestMove
         validMoves.add(bestMove)
         for move in validMoves:
-            nextValue = self.computeValue(move, 0)
+            nextGameState = self.gameState.copy()
+            nextGameState.makeMove(move)
+            nextValue = self.computeValue(nextGameState, 0)
             if nextValue > bestValue:
                 bestMove = move
                 bestValue = nextValue
-        if temp == bestMove:
-            print('did not select best move most likely')
+        # if temp == bestMove:
+        #     print('did not select best move most likely')
         self.gameState.makeMove(bestMove)
         return bestMove
 
     # compute and return the score of a move
-    def computeValue(self, move, depth):
-        if self.gameState.isTerminal():
-            return self.gameState.scoreGame()
+    def computeValue(self, state, depth):
+        if state.isTerminal():
+            return state.scoreGame()
         if depth < self.depth:
             print('depth =', depth)
-            nextGameState = self.gameState.copy()
-            #self.gameState = nextGameState
-            #print(self.gameState)
-            #if self.gameState.isTerminal():
-                #print('game simulation ended')
-                #return self.gameState.scoreGame()
-            if nextGameState.player == 2:
-                isMade = nextGameState.makeMove(move)
-                max = self.computeMax(nextGameState, depth + 1)
-                nextGameState.makeMove(move)
+            # nextGameState = state.copy()
+            # nextGameState.makeMove(move)
+            # if nextGameState.isTerminal():
+            #     return nextGameState.scoreGame()
+            if state.player == 1:
+                #isMade = nextGameState.makeMove(move)
+                max = self.computeMax(state, depth + 1)
                 print('computing max')
                 return max
-            elif nextGameState.player == 1:
-                isMade = nextGameState.makeMove(move)
-                min = self.computeMin(nextGameState, depth + 1)
-                nextGameState.makeMove(move)
+            elif state.player == 2:
+                #isMade = nextGameState.makeMove(move)
+                min = self.computeMin(state, depth + 1)
                 print('computing min')
                 return min
             else:
@@ -63,19 +61,23 @@ class Minimax:
             return self.scoreEstimate()
 
     # compute the value for a max node
-    def computeMax(self, newState, depth):
+    def computeMax(self, state, depth):
         maxValue = -2
-        for nextMove in newState.getValidMoves():
-            value = self.computeValue(nextMove, depth)
+        for nextMove in state.getValidMoves():
+            nextGameState = state.copy()
+            nextGameState.makeMove(nextMove)
+            value = self.computeValue(nextGameState, depth)
             if value > maxValue:
                 maxValue = value
         return maxValue
 
     # compute the value for a min node
-    def computeMin(self, newState, depth):
+    def computeMin(self, state, depth):
         minValue = 2
-        for nextMove in newState.getValidMoves():
-            value = self.computeValue(nextMove, depth)
+        for nextMove in state.getValidMoves():
+            nextGameState = state.copy()
+            nextGameState.makeMove(nextMove)
+            value = self.computeValue(nextGameState, depth)
             if value < minValue:
                 minValue = value
         return minValue
@@ -83,4 +85,4 @@ class Minimax:
     # if depth reached, give estimate for who will in
     # TODO: add heuristic
     def scoreEstimate(self):
-        return random.randint(-1, 1)
+        return 0
