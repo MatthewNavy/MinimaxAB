@@ -36,9 +36,9 @@ class Minimax:
             # if temp == bestMove:
             #     print('did not select best move most likely')
             end = perf_counter()
-            print('Time taken to compute next move (no pruning): ', end - start)
             self.gameState.makeMove(bestMove)
-            print('Number of nodes expanded (no pruning): ', self.nodeCount)
+            print('Time taken to compute next move:', end - start, 'seconds')
+            print('Number of nodes expanded with (depth of', self.depth, 'and no pruning):', self.nodeCount)
             return bestMove
         else:
             start = perf_counter()
@@ -58,9 +58,9 @@ class Minimax:
             # if temp == bestMove:
             #     print('did not select best move most likely')
             end = perf_counter()
-            print('Time taken to compute next move (with pruning): ', end - start)
             self.gameState.makeMove(bestMove)
-            print('Number of nodes expanded (with pruning): ', self.nodeCount)
+            print('Time taken to compute next move:', end - start, 'seconds')
+            print('Number of nodes expanded with (depth of', self.depth, 'and with pruning):', self.nodeCount)
             return bestMove
 
     # compute and return the score of a move
@@ -111,7 +111,7 @@ class Minimax:
         for nextMove in state.getValidMoves():
             nextGameState = state.copy()
             nextGameState.makeMove(nextMove)
-            value = self.computeValuePrune(nextGameState, depth, beta, max(alpha, maxValue))
+            value = max(maxValue, self.computeValuePrune(nextGameState, depth, alpha, beta))
             if value > maxValue:
                 maxValue = value
                 if maxValue >= beta:
@@ -125,12 +125,12 @@ class Minimax:
         for nextMove in state.getValidMoves():
             nextGameState = state.copy()
             nextGameState.makeMove(nextMove)
-            value = self.computeValuePrune(nextGameState, depth, min(beta, minValue), alpha)
+            value = min(minValue, self.computeValuePrune(nextGameState, depth, alpha, beta))
             if value < minValue:
                 minValue = value
                 if minValue <= alpha:
                     return minValue
-                beta = max(beta, minValue)
+                beta = min(beta, minValue)
         return minValue
 
     # compute the value for a max node
