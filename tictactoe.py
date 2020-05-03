@@ -6,6 +6,7 @@ class TicTacToe:
 
     # constructor
     def __init__(self):
+        self.name = "TicTacToe"
         # init all valid moves as tuples
         self.validMoves = set()
         for row in range(3):

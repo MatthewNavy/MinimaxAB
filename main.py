@@ -14,6 +14,8 @@ WHITE = (255, 255, 255)
 width = 900
 height = 900
 
+# TODO: functions for drawing checkers
+
 def promptUserAndMakeMove(pos):
     x = pos[0]
     y = pos[1]

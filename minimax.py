@@ -1,7 +1,7 @@
 # Matthew Barton
 
 # -1 = loss, 0 = tie, 1 = win
-# gameState contains: validMoves(), isTerminal(), scoreGame(), makeMove(move)
+# gameState contains: getValidMoves(), isTerminal(), scoreGame(), makeMove(move)
 
 from time import perf_counter
 
@@ -156,6 +156,9 @@ class Minimax:
         return minValue
 
     # if depth reached, give estimate for who will in
-    # TODO: add heuristic
     def scoreEstimate(self):
-        return 0
+        if self.gameState.name == "TicTacToe":
+            return 0
+        else:
+            # TODO: add heuristic
+            return self.gameState.player1Score - self.gameState.player2Score
