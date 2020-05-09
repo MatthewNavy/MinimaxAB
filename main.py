@@ -143,12 +143,12 @@ if __name__ == '__main__':
     # set up game and agent
     print('Starting tic-tac-toe game...')
     game = TicTacToe()
+    depth = int(input("Depth? "))
     pruneIn = input("Prune? ")
     if pruneIn.lower() == "yes":
         prune = True
     else:
         prune = False
-    depth = int(input("Depth? "))
     agent = Minimax(game, depth, prune)
     #game.printBoard()
 

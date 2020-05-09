@@ -69,19 +69,19 @@ class Minimax:
         if state.isTerminal():
             return state.scoreGame()
         if depth < self.depth:
-            print('depth =', depth)
+            #print('depth =', depth)
             if state.player == 1:
                 max = self.computeMax(state, depth + 1)
-                print('computing max')
+                #print('computing max')
                 return max
             elif state.player == 2:
                 min = self.computeMin(state, depth + 1)
-                print('computing min')
+                #print('computing min')
                 return min
             else:
                 raise ValueError
         else:
-            print('estimating')
+            #print('estimating')
             return self.scoreEstimate()
 
     # compute and return the score of a move
@@ -90,19 +90,19 @@ class Minimax:
         if state.isTerminal():
             return state.scoreGame()
         if depth < self.depth:
-            print('depth =', depth)
+            #print('depth =', depth)
             if state.player == 1:
                 max = self.computeMaxPrune(state, depth + 1, alpha, beta)
-                print('computing max')
+                #print('computing max')
                 return max
             elif state.player == 2:
                 min = self.computeMinPrune(state, depth + 1, alpha, beta)
-                print('computing min')
+                #print('computing min')
                 return min
             else:
                 raise ValueError
         else:
-            print('estimating')
+            #print('estimating')
             return self.scoreEstimate()
 
     # compute the value for a max node with ab pruning

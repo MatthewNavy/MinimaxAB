@@ -23,13 +23,13 @@ class Checkers:
         self.validMoves = set()
         for row in range(8):
             for col in range(8):
-                if self.board[row][col] == -1:
+                if self.board[row][col] == 1:
                     self.validMoves.add((row, col))
         # init valid moves as tuples
         self.validMovesHuman = set()
         for row in range(8):
             for col in range(8):
-                if self.board[row][col] == 1:
+                if self.board[row][col] == -1:
                     self.validMovesHuman.add((row, col))
         # capture totals
         self.player1Score = 0
@@ -41,13 +41,6 @@ class Checkers:
         validMoves = set()
         for validMove in self.validMoves:
             validMoves.add(validMove)
-        board = [[0, 1, 0, 1, 0, 1, 0, 1], [1, 0, 1, 0, 1, 0, 1, 0], [0, 1, 0, 1, 0, 1, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0], [-1, 0, -1, 0, -1, 0, -1, 0], [0, -1, 0, -1, 0, -1, 0, -1],
-        [-1, 0, -1, 0, -1, 0, -1, 0]]
-        for row in range(8):
-            for col in range(8):
-                board[row][col] = self.board[row][col]
-
         validMovesHuman = set()
         for validMove in self.validMovesHuman:
             validMoves.add(validMove)
